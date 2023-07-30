@@ -1,4 +1,8 @@
+import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import { HiOutlineSearch } from 'react-icons/hi';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
 
 export default function Navbar() {
@@ -7,7 +11,7 @@ export default function Navbar() {
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
           <div>
-            <img className="h-8" src={logo} alt="log" />
+            {/* <img className="h-8" src={logo} alt="log" /> */}
           </div>
           <div>
             <ul className="flex items-center">
@@ -31,9 +35,9 @@ export default function Navbar() {
                   <HiOutlineSearch size="25" />
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Cart />
-              </li>
+              </li> */}
               <li className="ml-5">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
@@ -48,7 +52,7 @@ export default function Navbar() {
                     <DropdownMenuItem className="cursor-pointer">
                       Profile
                     </DropdownMenuItem>
-                    {!user.email && (
+                    {/* {!user.email && (
                       <>
                         <Link to="/login">
                           <DropdownMenuItem className="cursor-pointer">
@@ -69,7 +73,7 @@ export default function Navbar() {
                       >
                         Logout
                       </DropdownMenuItem>
-                    )}
+                    )} */}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
