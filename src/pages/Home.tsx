@@ -2,6 +2,7 @@ import banner from '@/assets/images/banner.png';
 import hero from '@/assets/images/hero.png';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import Footer from '@/layouts/Footer';
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <div className="flex justify-between items-center h-[calc(100vh-80px)] max-w-7xl mx-auto ">
         <div>
           <h1 className="text-6xl font-black text-primary mb-2">
-            HAYLOU <br /> SOLAR PLUSE
+            Books <br /> 
           </h1>
           <p className="text-secondary font-semibold text-xl">
             Effortless communication at your fingertips
@@ -37,6 +38,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
