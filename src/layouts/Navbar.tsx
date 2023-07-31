@@ -23,7 +23,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Button variant="link" asChild>
-                  <Link to="/products">Products</Link>
+                  <Link to="/signup">SignUp</Link>
                 </Button>
               </li>
               <li>

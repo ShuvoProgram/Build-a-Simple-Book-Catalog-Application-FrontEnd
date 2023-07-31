@@ -1,13 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface IBooks {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+interface IBook {
+  id: string;
+  title: string;
+  author: string;
+  description: string;
 }
 
-const initialState: IBooks = {
-  status: 'idle',
+interface BookState {
+  loading: boolean;
+  error: string | null;
+  data: IBook[];
+}
+
+const initialState: BookState = {
+  loading: false,
   error: null,
+  data: [],
 };
 
 const bookSlice = createSlice({
@@ -15,14 +24,15 @@ const bookSlice = createSlice({
   initialState,
   reducers: {
     postRequestPending: (state) => {
-      state.status = 'loading';
+      state.loading = true;
       state.error = null;
     },
-    postRequestSuccess: (state) => {
-      state.status = 'succeeded';
+    postRequestSuccess: (state, action: PayloadAction<IBook>) => {
+      state.loading = true;
+      state.data.push(action.payload);
     },
     postRequestFailed: (state, action: PayloadAction<string>) => {
-      state.status = 'failed';
+      state.loading = false;
       state.error = action.payload;
     },
   },

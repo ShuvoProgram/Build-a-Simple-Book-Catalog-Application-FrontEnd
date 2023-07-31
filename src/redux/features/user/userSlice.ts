@@ -32,7 +32,7 @@ export const createUser = createAsyncThunk(
   'user/createUser',
   async ({ email, password }: ICredential) => {
     const data = await createUserWithEmailAndPassword(auth, email, password);
-
+    console.log(data);
     return data.user.email;
   }
 );

@@ -1,43 +1,22 @@
-import { usePostBooksMutation } from '@/redux/features/books/booksApi';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { postBook } from '@/redux/features/books/booksApi';
 import { ChangeEvent,FormEvent ,useState } from 'react';
 import { FiSend } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 
-interface IPost {
-    title: string;
-    author: string;
-    genre: string;
-    publicationDate: string;
-}
-
-export default function AddedBooks({title, author, genre, publicationDate} : IPost) {
-    const [inputValue, setInputValue] = useState<string>('');
-
-  const [postBooks, {isLoading, isError, isSuccess}] = usePostBooksMutation();
-
-  console.log(isLoading)
-  console.log(isError)
-  console.log(isSuccess)
+export default function AddedBooks() {
+  const dispatch = useDispatch();
+    const [formData, setFormData] = useState({ title: '', author: '', genre: '', publicationDate: '' });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(inputValue)
-
-    const options = {
-        title: title,
-        author: author,
-        genre: genre,
-        publicationDate: publicationDate
-    }
-
-    postBooks(options);
-    setInputValue('');
+    dispatch(postBook(formData))
+    console.log(formData)
   };
-
-//   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-//     setInputValue(e.target.value)
-//   }
 const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+  const {name, value} = event.target;
+    setFormData((prevData) => ({...prevData, [name]: value}))
+    console.log(name, value)
   };
 
   return (
@@ -50,7 +29,7 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           <input
             type="text"
             id="title"
-            onChange={handleChange} value={inputValue}
+            onChange={handleChange} value={formData.title}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -62,7 +41,7 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           <input
             type="text"
             id="author"
-            onChange={handleChange} value={inputValue}
+            onChange={handleChange} value={formData.author}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -74,7 +53,7 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           <input
             type="text"
             id="genre"
-            onChange={handleChange} value={inputValue}
+            onChange={handleChange} value={formData.genre}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -86,7 +65,7 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
           <input
             type="text"
             id="publicationDate"
-            onChange={handleChange} value={inputValue}
+            onChange={handleChange} value={formData.publicationDate}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
