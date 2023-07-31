@@ -41,28 +41,64 @@ const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto mt-5">
-        <form className="flex gap-5 items-center" onSubmit={handleSubmit}>
-      <div>
-        <label>Title:</label>
-        <input className="min-h-[30px]" type="text" onChange={handleChange} value={inputValue} />
-      </div>
-      <div>
-        <label>Author:</label>
-        <input type="text" value={inputValue} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Genre:</label>
-        <input type="text" value={inputValue} onChange={handleChange} />
-      </div>
-      <div>
-        <label>Publication Date:</label>
-        <input type="text" value={inputValue} onChange={handleChange} />
-      </div>
-      <button type="submit" className="rounded-full h-10 w-10 p-2 text-[25px]">
-        <FiSend />
-        Submit</button>
-    </form>
+    <div className="p-4 border border-gray-300 rounded shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label htmlFor="title" className="block text-gray-700 font-bold">
+            Title:
+          </label>
+          <input
+            type="text"
+            id="title"
+            onChange={handleChange} value={inputValue}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="author" className="block text-gray-700 font-bold">
+            Author:
+          </label>
+          <input
+            type="text"
+            id="author"
+            onChange={handleChange} value={inputValue}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="genre" className="block text-gray-700 font-bold">
+            Genre:
+          </label>
+          <input
+            type="text"
+            id="genre"
+            onChange={handleChange} value={inputValue}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="publicationDate" className="block text-gray-700 font-bold">
+            Publication Date:
+          </label>
+          <input
+            type="text"
+            id="publicationDate"
+            onChange={handleChange} value={inputValue}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+        >
+          <FiSend />
+          Add Book
+        </button>
+      </form>
     </div>
   );
 }
