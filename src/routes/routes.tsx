@@ -3,6 +3,7 @@ import App from "../App";
 import Home from "../pages/Home";
 import AddedBooks from "@/pages/AddedBooks";
 import Signup from "@/pages/signup";
+import Login from "@/pages/Login";
 
 const routes = createBrowserRouter([
     {
@@ -15,11 +16,15 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/add-new-book',
-                element: <AddedBooks title={""} author={""} genre={""} publicationDate={""}/>
+                element: <AddedBooks />
             },
             {
                 path: '/signup',
                 element: <Signup/>
+            },
+            {
+                path: '/login',
+                element: <Login/>
             }
         ]
     }

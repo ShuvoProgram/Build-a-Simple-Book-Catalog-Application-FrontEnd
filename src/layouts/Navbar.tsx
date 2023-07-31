@@ -4,9 +4,24 @@ import { HiOutlineSearch } from 'react-icons/hi';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import logo from '../assets/booklogo.png'
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { signOut } from "firebase/auth";
+import { setUser } from "@/redux/features/user/userSlice";
+import { auth } from "@/lib/firebase";
 
 
 export default function Navbar() {
+  const {user} = useAppSelector((state) => state.user)
+
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    console.log('Logout');
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      dispatch(setUser(null));
+    });
+  };
   return (
      <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
@@ -58,7 +73,7 @@ export default function Navbar() {
                     <DropdownMenuItem className="cursor-pointer">
                       Profile
                     </DropdownMenuItem>
-                    {/* {!user.email && (
+                    {!user.email && (
                       <>
                         <Link to="/login">
                           <DropdownMenuItem className="cursor-pointer">
@@ -79,7 +94,7 @@ export default function Navbar() {
                       >
                         Logout
                       </DropdownMenuItem>
-                    )} */}
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
