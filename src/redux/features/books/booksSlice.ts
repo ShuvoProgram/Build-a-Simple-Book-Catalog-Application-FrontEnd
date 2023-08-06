@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IBook {
-  id: string;
   title: string;
   author: string;
-  description: string;
+  genre: string;
+  publicationDate: string;
 }
 
 interface BookState {

@@ -22,10 +22,19 @@ import { cn } from '../../lib/utils';
 
 interface IProps {
   disabled?: boolean;
+  date: Date;
+  onDateChange: (date: Date) => void;
 }
 
-export function DatePickerWithPresets({ disabled }: IProps) {
-  const [date, setDate] = React.useState<Date>();
+export function DatePickerWithPresets({ disabled, date, onDateChange }: IProps) {
+  // const [date, setDate] = React.useState<Date>();
+  const handleDateChange = (newDate: Date | number) => {
+    if (onDateChange) {
+      // Ensure we convert numbers back to Date objects
+      const selectedDate = typeof newDate === "number" ? addDays(new Date(), newDate) : newDate;
+      onDateChange(selectedDate);
+    }
+  };
 
   return (
     <Popover>
@@ -45,7 +54,7 @@ export function DatePickerWithPresets({ disabled }: IProps) {
       <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
         <Select
           onValueChange={(value) =>
-            setDate(addDays(new Date(), parseInt(value)))
+            onDateChange(addDays(new Date(), parseInt(value)))
           }
         >
           <SelectTrigger>
@@ -59,7 +68,7 @@ export function DatePickerWithPresets({ disabled }: IProps) {
           </SelectContent>
         </Select>
         <div className="rounded-md border">
-          <Calendar mode="single" selected={date} onSelect={setDate} />
+          <Calendar mode="single" selected={date} onSelect={handleDateChange} />
         </div>
       </PopoverContent>
     </Popover>

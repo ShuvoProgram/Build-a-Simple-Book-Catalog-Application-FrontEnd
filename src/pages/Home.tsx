@@ -37,6 +37,10 @@ export default function Home() {
             <Link to="/products">Brows all products</Link>
           </Button>
         </div>
+        <div className="container mx-auto py-8">
+      <h1 className="text-2xl font-bold mb-4">Book Card Example</h1>
+      
+    </div>
       </div>
       <Footer/>
     </>
