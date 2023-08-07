@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import banner from '@/assets/images/banner.png';
 import hero from '@/assets/images/hero.png';
 import { Link } from 'react-router-dom';
@@ -34,13 +35,10 @@ export default function Home() {
             The future of tech is here
           </h1>
           <Button className="mt-10" asChild>
-            <Link to="/products">Brows all products</Link>
+            <Link to="/books">Brows all products</Link>
           </Button>
         </div>
-        <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">Book Card Example</h1>
-      
-    </div>
+        
       </div>
       <Footer/>
     </>
