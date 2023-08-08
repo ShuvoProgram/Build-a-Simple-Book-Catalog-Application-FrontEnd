@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { auth } from '@/lib/firebase';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
@@ -32,10 +33,59 @@ export const createUser = createAsyncThunk(
   'user/createUser',
   async ({ email, password }: ICredential) => {
     const data = await createUserWithEmailAndPassword(auth, email, password);
-    console.log(data);
     return data.user.email;
   }
 );
+
+// export const savePerson = createAsyncThunk(
+//   'user/save',
+//   async ({ email, password }: ICredential) => {
+//     const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         email,
+//         password,
+//       }),
+//     });
+//     const data = await res.json();
+//     return data;
+//   }
+// );
+
+export const savePerson = createAsyncThunk<
+  any, // Change this to the expected response data type
+  ICredential,
+  {
+    rejectValue: { errorMessage: string };
+  }
+>('user/save', async ({ email, password }, thunkAPI) => {
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!res.ok) {
+      const errorMessage = 'Failed to save person'; // Customize error message if needed
+      return thunkAPI.rejectWithValue({ errorMessage });
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    const errorMessage = 'An error occurred'; // Customize error message if needed
+    return thunkAPI.rejectWithValue({ errorMessage });
+  }
+});
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',

@@ -19,6 +19,13 @@ const initialState: BookState = {
   data: [],
 };
 
+export interface IGetBooksResponse {
+  books: IBook[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 const bookSlice = createSlice({
   name: 'book',
   initialState,
@@ -35,10 +42,18 @@ const bookSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setBooks: (state, action: PayloadAction<IBook>) => {
+      state.loading = true;
+      state.data.push(action.payload);
+    },
   },
 });
 
-export const { postRequestPending, postRequestSuccess, postRequestFailed } =
-  bookSlice.actions;
+export const {
+  postRequestPending,
+  postRequestSuccess,
+  postRequestFailed,
+  setBooks,
+} = bookSlice.actions;
 
 export default bookSlice.reducer;

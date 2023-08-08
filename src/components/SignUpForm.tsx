@@ -5,8 +5,10 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import {useForm} from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import {createUser} from '@/redux/features/user/userSlice';
+import {createUser, savePerson} from '@/redux/features/user/userSlice';
 import {useAppDispatch} from '@/redux/hook';
+import { toast } from './ui/use-toast';
+import { usePostUserMutation } from '@/redux/features/user/usersApi';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -22,11 +24,28 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
     formState: { errors },
   } = useForm<SignUpFormInputs>();
 
+  const [postUser, {isLoading}] = usePostUserMutation;
+
   const dispatch = useAppDispatch();
 
-  const onSubmit = (data: SignUpFormInputs) => {
-    console.log(data);
-    dispatch(createUser({ email: data.email, password: data.password }));
+
+  const onSubmit = async (data: SignUpFormInputs) => {
+    dispatch(createUser({ email: data.email, password: data.password })).then((data) => {
+      console.log(data.meta.arg)
+      const option = {
+        email: data.meta.arg.email,
+        password: data.meta.arg.password
+      }
+      try {
+        const result = savePerson(option);
+        toast({
+        description: 'User Successfully Added',
+      });
+        return result;
+      } catch (error) {
+        console.error('Error occurred:', error);
+      }
+    })
   };
 
   return (

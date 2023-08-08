@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 interface Book {
 //   image: string;
-id: string;
+_id: string;
   title: string;
   author: string;
   genre: string;
@@ -16,7 +16,7 @@ interface BookCardProps {
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   return (
-    <Link to={`/${book.id}`} className="max-w-sm rounded overflow-hidden shadow-lg">
+    <Link to={`/books-details/${book._id}`} className="max-w-sm rounded overflow-hidden shadow-lg">
       {/* <img src={book.image} alt={book.title} className="w-full h-40 object-cover" /> */}
       <div className="px-6 py-4">
         <h2 className="text-xl font-bold mb-2">{book.title}</h2>

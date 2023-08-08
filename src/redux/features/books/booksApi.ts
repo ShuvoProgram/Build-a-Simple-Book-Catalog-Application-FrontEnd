@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from '@/redux/api/apiSlice';
+import { IGetBooksResponse } from './booksSlice';
 
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,8 +18,15 @@ const bookApi = api.injectEndpoints({
     singleBook: builder.query({
       query: (id) => `/book/${id}`,
     }),
+    searchBooks: builder.query<IGetBooksResponse, { query: string }>({
+      query: ({ query }) => `/books/search?=${query}`,
+    }),
   }),
 });
 
-export const { usePostBooksMutation, useGetBooksQuery, useSingleBookQuery } =
-  bookApi;
+export const {
+  usePostBooksMutation,
+  useGetBooksQuery,
+  useSingleBookQuery,
+  useLazySearchBooksQuery,
+} = bookApi;

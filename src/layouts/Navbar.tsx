@@ -12,8 +12,12 @@ import { auth } from "@/lib/firebase";
 
 export default function Navbar() {
   const {user} = useAppSelector((state) => state.user)
+ 
 
   const dispatch = useAppDispatch();
+
+ 
+
 
   const handleLogout = () => {
     console.log('Logout');
@@ -52,9 +56,9 @@ export default function Navbar() {
                 </Button>
               </li>
               <li>
-                <Button variant="ghost">
+                <Link to={'/search'}>
                   <HiOutlineSearch size="25" />
-                </Button>
+                </Link>
               </li>
               {/* <li>
                 <Cart />
