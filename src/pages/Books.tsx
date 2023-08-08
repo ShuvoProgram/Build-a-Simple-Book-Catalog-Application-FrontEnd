@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import BookCard from '@/components/BookCard';
+import FilterList from '@/components/FilterList';
 import { SkeletonData } from '@/components/ui/skeletonData';
-import { useGetBooksQuery } from '@/redux/features/books/booksApi';
+import { useGetBooksQuery, useGetFilterQuery } from '@/redux/features/books/booksApi';
 import { IBookData } from '@/types/globalTypes';
 export default function Books() {
     const { data, isLoading } = useGetBooksQuery(undefined, {
+      refetchOnMountOrArgChange: true,
         pollingInterval: 30000
     });
+
+    const {data: filter} = useGetFilterQuery();
      
     if (isLoading) {
     return (
@@ -22,6 +26,7 @@ export default function Books() {
  
   return (
     <div className="container mx-auto py-8">
+      <FilterList filter={filter}/>
       <h1 className="text-2xl font-bold mb-4">Book Collection</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {data?.data.length === 0? (

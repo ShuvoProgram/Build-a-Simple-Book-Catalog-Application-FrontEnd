@@ -1,43 +1,50 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-extra-semi */
+import { useState, FormEvent } from 'react';
+import { usePatchBookMutation } from '@/redux/features/books/booksApi';
 import { toast } from '@/components/ui/use-toast';
-import { usePostBooksMutation } from '@/redux/features/books/booksApi';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { FormEvent ,useState } from 'react';
+import { Input } from '@/components/ui/input';
 import { FiSend } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function AddedBooks() {
-  const navigate = useNavigate();
-  const [title, setTitle] = useState<string>('');
+export default function EditBook() {
+   const {id} = useParams();
+   const navigate = useNavigate();
+const [title, setTitle] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
   const [genre, setGenre] = useState<string>('');
+  const [patchBook, { isError, isSuccess}] = usePatchBookMutation();
 
-    const [postBooks, {isSuccess}] = usePostBooksMutation();
-    if(isSuccess) {
-      toast({
-      description: 'Product Added',
+  if(isSuccess){
+    toast({
+      description: 'Successfully Updated Book'
     });
     navigate('/books')
-    }
-  
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const bookPost = {
+  }
+  if(isError){
+    toast({
+      description: 'Failed Updated Book',
+    });
+  }
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Send form data to the backend for updating the book
+    const EditBook = {
+        id: id,
       title: title,
       author: author,
       genre: genre,
-      publicationDate: new Date()
     }
+    console.log(EditBook);
     try {
-      const result = await postBooks(bookPost);
-      return result;
+        const result = await patchBook(EditBook);
+        return result;
     } catch (error) {
-      console.error('Error occurred:', error);
+        console.error('Error occurred:', error);
     }
   };
-
-
 
   return (
     <div className="p-4 border border-gray-300 rounded shadow-md">
@@ -78,9 +85,9 @@ export default function AddedBooks() {
           className={`flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 cursor-pointer`}
         >
           <FiSend/>
-          Add Book
+          Update Book
         </button>
       </form>
     </div>
   );
-}
+};
