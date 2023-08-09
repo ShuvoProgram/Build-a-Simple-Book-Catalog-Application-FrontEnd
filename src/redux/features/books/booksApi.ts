@@ -28,6 +28,17 @@ const bookApi = api.injectEndpoints({
         };
       },
     }),
+    deleteBook: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          url: `/book/${data}`,
+          method: 'DELETE',
+          body: data,
+        };
+      },
+      invalidatesTags: ['post'],
+    }),
     searchBooks: builder.query<IGetBooksResponse, { query: string }>({
       query: ({ query }) => `/books/search?=${query}`,
     }),
@@ -50,6 +61,7 @@ export const {
   useGetBooksQuery,
   useSingleBookQuery,
   usePatchBookMutation,
+  useDeleteBookMutation,
   useLazySearchBooksQuery,
   useGetFilterQuery,
   useGetFilterBooksQuery,

@@ -20,7 +20,7 @@ const [title, setTitle] = useState<string>('');
     toast({
       description: 'Successfully Updated Book'
     });
-    navigate('/books')
+    navigate('/dashboard/books')
   }
   if(isError){
     toast({

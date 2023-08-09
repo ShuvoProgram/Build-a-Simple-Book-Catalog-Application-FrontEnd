@@ -18,7 +18,7 @@ export default function AddedBooks() {
       toast({
       description: 'Product Added',
     });
-    navigate('/books')
+    navigate('/dashboard/books')
     }
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

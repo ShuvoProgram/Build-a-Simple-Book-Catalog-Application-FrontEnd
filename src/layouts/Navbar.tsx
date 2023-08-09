@@ -1,23 +1,25 @@
-import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Link } from 'react-router-dom';
+import { Button } from '../components/ui/button';
 import { HiOutlineSearch } from 'react-icons/hi';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import logo from '../assets/booklogo.png'
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { signOut } from "firebase/auth";
-import { setUser } from "@/redux/features/user/userSlice";
-import { auth } from "@/lib/firebase";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
+import logo from '../assets/booklogo.png';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { signOut } from 'firebase/auth';
+import { setUser } from '@/redux/features/user/userSlice';
+import { auth } from '@/lib/firebase';
 
 export default function Navbar() {
-  const {user} = useAppSelector((state) => state.user)
- 
+  const { user } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
-
- 
-
 
   const handleLogout = () => {
     console.log('Logout');
@@ -27,7 +29,7 @@ export default function Navbar() {
     });
   };
   return (
-     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
+    <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
           <div>
@@ -45,11 +47,7 @@ export default function Navbar() {
                   <Link to="/signup">SignUp</Link>
                 </Button>
               </li>
-              <li>
-                <Button variant="link" asChild>
-                  <Link to="/add-new-book">add-new-book</Link>
-                </Button>
-              </li>
+
               <li>
                 <Button variant="link" asChild>
                   <Link to="/checkout">Checkout</Link>
@@ -92,12 +90,25 @@ export default function Navbar() {
                       </>
                     )}
                     {user.email && (
-                      <DropdownMenuItem
-                        onClick={handleLogout}
-                        className="cursor-pointer"
-                      >
-                        Logout
-                      </DropdownMenuItem>
+                      <>
+                        <Link to="/add-new-book">
+                          <DropdownMenuItem className="cursor-pointer">
+                            add-new-book
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/dashboard/books">
+                          <DropdownMenuItem className="cursor-pointer">
+                            Books Table
+                          </DropdownMenuItem>
+                        </Link>
+
+                        <DropdownMenuItem
+                          onClick={handleLogout}
+                          className="cursor-pointer"
+                        >
+                          Logout
+                        </DropdownMenuItem>
+                      </>
                     )}
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -107,5 +118,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

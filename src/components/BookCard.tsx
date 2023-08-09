@@ -28,7 +28,6 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
         <a href="#" className="text-blue-500 font-semibold hover:text-blue-600">
           Wishlist
         </a>
-        <Link to={`/edit-books/${book._id}`}>Edit</Link>
         <a href="#" className="text-green-500 font-semibold hover:text-green-600">
           Read
         </a>

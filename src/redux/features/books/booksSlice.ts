@@ -66,13 +66,6 @@ const bookSlice = createSlice({
         };
       }
     },
-    // updateBook: (state, action) => {
-    //   const updatedBook = action.payload;
-    //   state.data[updatedBook.id] = {
-    //     ...state.data[updatedBook.id],
-    //     ...updatedBook,
-    //   };
-    // },
   },
 });
 
