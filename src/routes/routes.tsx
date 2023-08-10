@@ -9,6 +9,7 @@ import BooksDetails from "@/pages/BooksDetails";
 import Search from "@/pages/Search";
 import EditBook from "@/pages/EditBook";
 import BookCrud from "@/pages/BookCrud";
+import WishList from "@/pages/WishList";
 
 const routes = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const routes = createBrowserRouter([
             {
                 path: '/dashboard/books',
                 element: <BookCrud/>
+            },
+            {
+                path: '/dashboard/wishlist',
+                element: <WishList/>
             },
             {
                 path: '/signup',

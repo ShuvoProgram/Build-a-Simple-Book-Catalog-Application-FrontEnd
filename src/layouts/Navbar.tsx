@@ -101,6 +101,11 @@ export default function Navbar() {
                             Books Table
                           </DropdownMenuItem>
                         </Link>
+                        <Link to="/dashboard/wishlist">
+                          <DropdownMenuItem className="cursor-pointer">
+                            Wishlist
+                          </DropdownMenuItem>
+                        </Link>
 
                         <DropdownMenuItem
                           onClick={handleLogout}

@@ -32,7 +32,7 @@ export default function Books() {
         {data?.data.length === 0? (
         <div>No books available.</div>
         ) : data?.data?.map((book: IBookData) => (
-          <BookCard book={book}/>
+          <BookCard key={book._id} book={book}/>
         ))
       }
       </div>

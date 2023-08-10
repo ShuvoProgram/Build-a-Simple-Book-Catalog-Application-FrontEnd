@@ -1,4 +1,4 @@
-import { TableDemo } from "@/components/Table";
+import { TableDemo } from "@/components/TableDemo";
 
 
 export default function BookCrud() {
