@@ -7,7 +7,9 @@ interface IProps {
 }
 
 export default function PrivateRoute({children}: IProps){
-    const {user, isLoading} = useAppSelector((state) => state.user);
+    const {user, isLoading} = useAppSelector((state) => state.auth);
+
+    const token = localStorage.getItem('token');
 
     const {pathname} = useLocation();
 
@@ -15,7 +17,7 @@ export default function PrivateRoute({children}: IProps){
         return <p>Loading...</p>;
     }
 
-    if(!user.email && !isLoading) {
+    if(!user?.email && !isLoading && token) {
         return <Navigate to='/login' state={{path: pathname}} />
     }
     return children;

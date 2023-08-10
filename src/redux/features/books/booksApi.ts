@@ -30,7 +30,6 @@ const bookApi = api.injectEndpoints({
     }),
     deleteBook: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: `/book/${data}`,
           method: 'DELETE',
@@ -48,10 +47,28 @@ const bookApi = api.injectEndpoints({
       invalidatesTags: ['post'],
     }),
     getWishlistBook: builder.query({
-      query: ({ query }) => `/wishlist?user=${query}`,
+      query: (query) => {
+        console.log(query);
+        return {
+          url: `/wishlist?user=${query}`,
+          method: 'GET',
+        };
+      },
     }),
-    searchBooks: builder.query<IGetBooksResponse, { query: string }>({
-      query: ({ query }) => `/books/search?=${query}`,
+    deleteWishlist: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/wishlist/${data}`,
+          method: 'DELETE',
+          body: data,
+        };
+      },
+      invalidatesTags: ['post'],
+    }),
+    searchBooks: builder.query({
+      query: (query) => ({
+        url: `book?search=${query}`,
+      }),
     }),
     getFilter: builder.query<IFilter[], void>({
       query: () => '/books/categories',
@@ -66,7 +83,7 @@ const bookApi = api.injectEndpoints({
     }),
   }),
 });
-
+// <IGetBooksResponse, { query: string }>
 export const {
   usePostBooksMutation,
   useGetBooksQuery,
@@ -78,4 +95,5 @@ export const {
   useGetFilterBooksQuery,
   useWishlistBookMutation,
   useGetWishlistBookQuery,
+  useDeleteWishlistMutation,
 } = bookApi;

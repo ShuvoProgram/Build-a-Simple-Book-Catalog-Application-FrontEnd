@@ -5,7 +5,7 @@ import { api } from './api/apiSlice';
 
 const store = configureStore({
   reducer: {
-    user: userReducer,
+    auth: userReducer,
     books: booksSlice,
     [api.reducerPath]: api.reducer,
   },

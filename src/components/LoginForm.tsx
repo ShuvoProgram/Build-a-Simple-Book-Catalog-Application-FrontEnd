@@ -8,10 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { loginUser } from '@/redux/features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useLoginMutation } from '@/redux/features/user/usersApi';
+import { setAuthToken, setAuthUserId } from '@/redux/features/user/userSlice';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -24,26 +23,34 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<LoginFormInputs>();
 
-  const { user, isLoading } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
-
-    dispatch(loginUser({ email: data.email, password: data.password }));
+  const onSubmit = async (data: LoginFormInputs) => {
+    await login(data).unwrap().then(data => {
+      const {token, id} = data;
+      setAuthToken({token});
+      setAuthUserId({userId: id})
+      if(isSubmitSuccessful){
+        return (
+          <>
+          <h1 className='text-2xl text-green-600'>Login Successfully</h1>
+          </>
+        )
+      }
+      setTimeout(() => {
+        navigate('/')
+      }, 1000)
+    }).catch(err => (
+       <>
+          <h1 className='text-2xl text-green-600'>{err}</h1>
+          </>
+    ))
   };
-
-  useEffect(() => {
-    if (user.email && !isLoading) {
-      navigate('/');
-    }
-  }, [user.email, isLoading, navigate]);
-
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,7 +79,7 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
             />
             {errors.password && <p>{errors.password.message}</p>}
           </div>
-          <Button>Login with email</Button>
+          <Button variant={'ghost'}>Login with email</Button>
         </div>
       </form>
       <div className="relative">

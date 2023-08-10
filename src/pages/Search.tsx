@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// import BookCard from '@/components/BookCard';
+import BookCard from '@/components/BookCard';
 import { useDebounce } from 'use-debounce';
 import ErrorMessage from '@/components/ErrorMessage';
 import SearchForm from '@/components/searchForm';
 import { SkeletonData } from '@/components/ui/skeletonData';
 import { useLazySearchBooksQuery } from '@/redux/features/books/booksApi';
-// import { IBookData } from '@/types/globalTypes';
+import { IBookData } from '@/types/globalTypes';
 import { useEffect, useState } from 'react'
 
 export default function Search() {
@@ -27,28 +27,24 @@ export default function Search() {
         return <ErrorMessage error={error}/>
       }
   return (
-    <>
+    <div className='wrapper'>
     <h1>Search Books</h1>
     <SearchForm query={searchTerm} setQuery={setSearchTerm}/>
 
     {
         data && searchTerm.length ? (
             <>
-            {/* {data?.data.length === 0? (
+            {data?.length === 0? (
         <div>No books available.</div>
-        ) : data?.data?.map((book: IBookData) => (
-          <BookCard book={book}/>
+        ) : data?.map((book: IBookData) => (
+          <BookCard key={book._id} book={book}/>
         ))
-      } */}
-      {
-        console.log(data)
       }
             </>
-
         ) : (
             <p>No Books Found</p>
         )
     }
-    </>
+    </div>
   )
 }
