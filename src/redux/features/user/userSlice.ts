@@ -1,105 +1,147 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useAppSelector } from '@/redux/hook';
-import { RootState } from '@/redux/store';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { auth } from '@/lib/firebase';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
-export interface ILogin {
-  email: string;
-  password: string;
-}
-
-export interface ILoginResponse {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-  token: string;
-}
-
-export interface IToken {
-  token: string;
-}
-
-export interface IUserId {
-  userId: number;
-}
-
-export interface IRegister {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface IUserResponse {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-  token: string;
-  age: number;
-  phone: string;
-  password: string;
-}
-
-interface AuthState {
-  token: string;
-  userId: number;
+interface IUserState {
+  user: {
+    email: string | null;
+  };
   isLoading: boolean;
   isError: boolean;
-  user: IUserResponse | null;
+  error: string | null;
 }
 
-const initialState: AuthState = {
-  token: '',
-  userId: 0,
-  user: null,
+interface ICredential {
+  email: string;
+  password: string;
+}
+
+const initialState: IUserState = {
+  user: {
+    email: null,
+  },
   isLoading: false,
   isError: false,
+  error: null,
 };
 
-export const authSlice = createSlice({
-  name: 'auth',
+export const createUser = createAsyncThunk(
+  'user/createUser',
+  async ({ email, password }: ICredential) => {
+    const data = await createUserWithEmailAndPassword(auth, email, password);
+    return data.user.email;
+  }
+);
+
+// export const savePerson = createAsyncThunk(
+//   'user/save',
+//   async ({ email, password }: ICredential) => {
+//     const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         email,
+//         password,
+//       }),
+//     });
+//     const data = await res.json();
+//     return data;
+//   }
+// );
+
+export const savePerson = createAsyncThunk<
+  any, // Change this to the expected response data type
+  ICredential,
+  {
+    rejectValue: { errorMessage: string };
+  }
+>('user/save', async ({ email, password }, thunkAPI) => {
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!res.ok) {
+      const errorMessage = 'Failed to save person'; // Customize error message if needed
+      return thunkAPI.rejectWithValue({ errorMessage });
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    const errorMessage = 'An error occurred'; // Customize error message if needed
+    return thunkAPI.rejectWithValue({ errorMessage });
+  }
+});
+
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async ({ email, password }: ICredential) => {
+    const data = await signInWithEmailAndPassword(auth, email, password);
+
+    return data.user.email;
+  }
+);
+
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
-    setAuthToken: (state: AuthState, action: PayloadAction<IToken>) => {
-      state.token = action.payload.token;
-      localStorage.setItem('token', action.payload.token);
-    },
-    setAuthUserId: (state: AuthState, action: PayloadAction<IUserId>) => {
-      state.userId = action.payload.userId;
-      localStorage.setItem('user', action.payload.userId.toString());
-    },
-    setUser: (state: AuthState, action: PayloadAction<IUserResponse>) => {
-      state.user = action.payload;
-      localStorage.setItem('userId', JSON.stringify(action.payload)); // Store user data in localStorage
+    setUser: (state, action: PayloadAction<string | null>) => {
+      state.user.email = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    logout: (state: AuthState) => {
-      state.token = '';
-      state.userId = 0;
-      state.user = null;
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('user'); // Remove user data from localStorage
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(createUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = null;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.user.email = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.user.email = null;
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error.message!;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user.email = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.user.email = null;
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error.message!;
+      });
   },
 });
 
-export const { setAuthToken, setAuthUserId, setUser, setLoading, logout } =
-  authSlice.actions;
+export const { setUser, setLoading } = userSlice.actions;
 
-export default authSlice.reducer;
-
-export const useAuthTokenSelector = () =>
-  useAppSelector((state: RootState) => state.auth.token);
-export const useAuthUserIdSelector = () =>
-  useAppSelector((state: RootState) => state.auth.userId);
-export const useAuthUserSelector = () =>
-  useAppSelector((state: RootState) => state.auth.user);
+export default userSlice.reducer;

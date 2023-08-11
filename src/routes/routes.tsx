@@ -10,6 +10,7 @@ import Search from "@/pages/Search";
 import EditBook from "@/pages/EditBook";
 import BookCrud from "@/pages/BookCrud";
 import WishList from "@/pages/WishList";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = createBrowserRouter([
     {
@@ -30,7 +31,7 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/edit-books/:id',
-                element: <EditBook/>
+                element: <PrivateRoute><EditBook/></PrivateRoute>
             },
             {
                 path: '/search',
@@ -38,15 +39,15 @@ const routes = createBrowserRouter([
             },
             {
                 path: '/add-new-book',
-                element: <AddedBooks />
+                element: <PrivateRoute><AddedBooks /></PrivateRoute>
             },
             {
                 path: '/dashboard/books',
-                element: <BookCrud/>
+                element: <PrivateRoute><BookCrud/></PrivateRoute>
             },
             {
                 path: '/dashboard/wishlist',
-                element: <WishList/>
+                element: <PrivateRoute><WishList/></PrivateRoute>
             },
             {
                 path: '/signup',

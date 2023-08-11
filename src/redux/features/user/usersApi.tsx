@@ -1,32 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { api } from '@/redux/api/apiSlice';
-import { nanoid } from '@reduxjs/toolkit';
-import { ILogin, ILoginResponse, IRegister, IUserResponse } from './userSlice';
 
 const usersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<ILoginResponse, ILogin>({
-      query: credentials => ({
-        url: '/auth/login',
+    postUser: builder.mutation({
+      query: credential => ({
+        url: `/users`,
         method: 'POST',
-        body: credentials
+        body: {...credential},
       })
     }),
-    register: builder.mutation<IUserResponse, IRegister>({
-      query: user => ({
-        url: '/users/add',
-        method: 'POST',
-        body: user,
-      }),
-      transformResponse: (response: IUserResponse) => ({ ...response, token: nanoid() }),
-    }),
-    getUser: builder.query<IUserResponse, string>({
-      query: id => ({
-        url: `/users/${id}`,
+    getUser: builder.query({
+      query: email => ({
+        url: `/user/${email}`,
         method: 'GET',
-      }),
-    }),
+    })
   }),
+})
 });
 
-export const { useLoginMutation, useRegisterMutation, useGetUserQuery, useLazyGetUserQuery } = usersApi;
+export const { usePostUserMutation, useGetUserQuery, useLazyGetUserQuery } = usersApi;

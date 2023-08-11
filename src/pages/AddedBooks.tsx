@@ -6,8 +6,10 @@ import { Label } from '@/components/ui/label';
 import { FormEvent ,useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/redux/hook';
 
 export default function AddedBooks() {
+  const { user } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [author, setAuthor] = useState<string>('');
@@ -27,7 +29,8 @@ export default function AddedBooks() {
       title: title,
       author: author,
       genre: genre,
-      publicationDate: new Date()
+      publicationDate: new Date(),
+      email: user.email
     }
     try {
       const result = await postBooks(bookPost);

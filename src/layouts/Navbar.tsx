@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { HiOutlineSearch } from 'react-icons/hi';
 import {
@@ -11,26 +11,24 @@ import {
 } from '../components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import logo from '../assets/booklogo.png';
-import { useAuth, useCheckAuthenticated } from '@/hook/useAuth';
-import { logout } from '@/redux/features/user/userSlice';
-import { useAppDispatch } from '@/redux/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { setUser } from '@/redux/features/user/userSlice';
 // import { FormEvent } from 'react';
 
 export default function Navbar() {
-  const {isAuthenticated} = useCheckAuthenticated();
-  const {isAuthLoaded} = useAuth();
-  const navigate = useNavigate();
+ const { user } = useAppSelector((state) => state.auth);
+
   const dispatch = useAppDispatch();
 
-  const logoutHandler = () => {
-    dispatch(logout()); // Dispatch the logout action from your userSlice
-    navigate('/');
+  const handleLogout = () => {
+    console.log('Logout');
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      dispatch(setUser(null));
+    });
   };
-
-  if(!isAuthLoaded){
-    <div>Loading....</div>
-  }
-
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
@@ -78,7 +76,7 @@ export default function Navbar() {
                     <DropdownMenuItem className="cursor-pointer">
                       Profile
                     </DropdownMenuItem>
-                    {!isAuthenticated && (
+                    {!user.email && (
                       <>
                         <Link to="/login">
                           <DropdownMenuItem className="cursor-pointer">
@@ -92,7 +90,7 @@ export default function Navbar() {
                         </Link>
                       </>
                     )}
-                    {isAuthenticated && (
+                    {user.email && (
                       <>
                         <Link to="/add-new-book">
                           <DropdownMenuItem className="cursor-pointer">
@@ -111,7 +109,7 @@ export default function Navbar() {
                         </Link>
 
                         <DropdownMenuItem
-                          onClick={logoutHandler}
+                          onClick={handleLogout}
                           className="cursor-pointer"
                         >
                           Logout

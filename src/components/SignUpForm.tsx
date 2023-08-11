@@ -1,44 +1,57 @@
-'use client';
-
 import * as React from 'react';
-
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
+import {cn} from '../lib/utils';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import {useForm} from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { loginUser } from '@/redux/features/user/userSlice';
+import {createUser, savePerson} from '@/redux/features/user/userSlice';
+import {useAppDispatch, useAppSelector} from '@/redux/hook';
+import { toast } from './ui/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+// import { usePostUserMutation } from '@/redux/features/user/usersApi';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
-interface LoginFormInputs {
+interface SignUpFormInputs {
   email: string;
   password: string;
 }
 
-export function LoginForm({ className, ...props }: UserAuthFormProps) {
+export function SignupForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormInputs>();
+  } = useForm<SignUpFormInputs>();
 
-  const { user, isLoading } = useAppSelector((state) => state.auth);
+//   const [postUser, {isLoading}] = usePostUserMutation;
+const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
+  const { user, isLoading } = useAppSelector((state) => state.auth);
 
-  const navigate = useNavigate();
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
-
-    dispatch(loginUser({ email: data.email, password: data.password }));
+  const onSubmit = async (data: SignUpFormInputs) => {
+    dispatch(createUser({ email: data.email, password: data.password })).then((data) => {
+      console.log(data.meta.arg)
+      const option = {
+        email: data.meta.arg.email,
+        password: data.meta.arg.password
+      }
+      try {
+        const result = savePerson(option);
+        toast({
+        description: 'User Successfully Added',
+      });
+        return result;
+      } catch (error) {
+        console.error('Error occurred:', error);
+      }
+    })
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (user.email && !isLoading) {
       navigate('/');
     }
@@ -67,12 +80,19 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
               placeholder="your password"
               type="password"
               autoCapitalize="none"
-              autoComplete="password"
+              autoCorrect="off"
               {...register('password', { required: 'Password is required' })}
             />
             {errors.password && <p>{errors.password.message}</p>}
+            <Input
+              id="password"
+              placeholder="confirm password"
+              type="password"
+              autoCapitalize="none"
+              autoCorrect="off"
+            />
           </div>
-          <Button variant={'secondary'}>Login with email</Button>
+          <Button variant={'secondary'}>Create Account</Button>
         </div>
       </form>
       <div className="relative">
