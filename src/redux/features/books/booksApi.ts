@@ -16,6 +16,9 @@ const bookApi = api.injectEndpoints({
     getBooks: builder.query({
       query: () => '/books',
     }),
+    recentGetBooks: builder.query({
+      query: () => '/recent-books',
+    }),
     singleBook: builder.query({
       query: (id) => `/book/${id}`,
     }),
@@ -86,6 +89,7 @@ const bookApi = api.injectEndpoints({
 // <IGetBooksResponse, { query: string }>
 export const {
   usePostBooksMutation,
+  useRecentGetBooksQuery,
   useGetBooksQuery,
   useSingleBookQuery,
   usePatchBookMutation,

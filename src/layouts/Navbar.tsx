@@ -11,26 +11,25 @@ import {
 } from '../components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import logo from '../assets/booklogo.png';
-import { useCheckAuthenticated } from '@/hook/useAuth';
+import { useAuth, useCheckAuthenticated } from '@/hook/useAuth';
 import { logout } from '@/redux/features/user/userSlice';
 import { useAppDispatch } from '@/redux/hook';
 // import { FormEvent } from 'react';
 
 export default function Navbar() {
   const {isAuthenticated} = useCheckAuthenticated();
+  const {isAuthLoaded} = useAuth();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  // const logoutHandler = (e: FormEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-
-  //   logout();
-  //   navigate('/');
-  // };
   const logoutHandler = () => {
     dispatch(logout()); // Dispatch the logout action from your userSlice
     navigate('/');
   };
+
+  if(!isAuthLoaded){
+    <div>Loading....</div>
+  }
 
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">

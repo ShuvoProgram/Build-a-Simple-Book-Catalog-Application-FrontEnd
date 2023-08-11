@@ -72,10 +72,11 @@ export const authSlice = createSlice({
     },
     setAuthUserId: (state: AuthState, action: PayloadAction<IUserId>) => {
       state.userId = action.payload.userId;
-      localStorage.setItem('userId', action.payload.userId.toString());
+      localStorage.setItem('user', action.payload.userId.toString());
     },
     setUser: (state: AuthState, action: PayloadAction<IUserResponse>) => {
       state.user = action.payload;
+      localStorage.setItem('userId', JSON.stringify(action.payload)); // Store user data in localStorage
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -86,6 +87,7 @@ export const authSlice = createSlice({
       state.user = null;
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
+      localStorage.removeItem('user'); // Remove user data from localStorage
     },
   },
 });

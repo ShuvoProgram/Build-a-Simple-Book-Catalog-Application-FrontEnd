@@ -20,19 +20,19 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.auth);
   const [wishlistBook] = useWishlistBookMutation();
 
   const handleWishlist = async () => {
     const wishlistBookObject = {
       postId: book._id,
-      user: user.email,
+      user: user?.email,
       title: book.title,
       author: book.author,
       genre: book.genre,
       publicationDate: book.publicationDate,
     };
-    if(user.email){
+    if(user?.email){
       try {
       const result = await wishlistBook(wishlistBookObject)
       if(result.data.acknowledged) {
