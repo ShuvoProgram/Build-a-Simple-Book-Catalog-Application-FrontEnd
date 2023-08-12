@@ -8,6 +8,8 @@ interface ISearchFormProps {
 }
 
 const SearchForm: FC<ISearchFormProps> = ({ query, setQuery }) => {
+
+   
  
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setQuery(e.target.value);

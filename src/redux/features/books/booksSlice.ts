@@ -1,3 +1,4 @@
+import { RootState } from '@/redux/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IBook {
@@ -5,7 +6,7 @@ interface IBook {
   title: string;
   author: string;
   genre: string;
-  publicationDate?: string;
+  publicationDate: string;
 }
 
 interface BookState {
@@ -13,6 +14,8 @@ interface BookState {
   error: string | null;
   data: IBook[];
   filter: IFilter[];
+  selectedGenre: string | null;
+  selectedYear: string | null;
 }
 
 const initialState: BookState = {
@@ -20,6 +23,8 @@ const initialState: BookState = {
   error: null,
   data: [],
   filter: [],
+  selectedGenre: null,
+  selectedYear: null,
 };
 
 export interface IGetBooksResponse {
@@ -66,6 +71,12 @@ const bookSlice = createSlice({
         };
       }
     },
+    setSelectedGenre: (state, action: PayloadAction<string | null>) => {
+      state.selectedGenre = action.payload;
+    },
+    setSelectedYear: (state, action: PayloadAction<string | null>) => {
+      state.selectedYear = action.payload;
+    },
   },
 });
 
@@ -75,10 +86,31 @@ export const {
   postRequestFailed,
   setBooks,
   setFilter,
+  setSelectedGenre,
+  setSelectedYear,
   updateBook,
 } = bookSlice.actions;
 
 export const selectBookById = (state: { books: BookState }, bookId: string) =>
   state.books.data.find((book) => book.id === bookId);
 
+export const selectFilteredBooks = (state: RootState) => {
+  const { data, selectedGenre, selectedYear } = state.books;
+
+  let filteredBooks = [...data];
+
+  if (selectedGenre) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.genre === selectedGenre
+    );
+  }
+
+  if (selectedYear) {
+    filteredBooks = filteredBooks.filter(
+      (book) => book.publicationDate === selectedYear
+    );
+  }
+
+  return filteredBooks;
+};
 export default bookSlice.reducer;
