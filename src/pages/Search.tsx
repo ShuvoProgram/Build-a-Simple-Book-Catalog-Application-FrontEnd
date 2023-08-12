@@ -16,7 +16,7 @@ export default function Search() {
 
       useEffect(() => {
         if(debouncedQuery.length){
-            searchBooks({query: debouncedQuery})
+            searchBooks(debouncedQuery)
         }
       }, [debouncedQuery, searchBooks])
 
@@ -26,6 +26,7 @@ export default function Search() {
       if(error) {
         return <ErrorMessage error={error}/>
       }
+      
   return (
     <div className='wrapper'>
     <h1>Search Books</h1>
@@ -33,14 +34,14 @@ export default function Search() {
 
     {
         data && searchTerm.length ? (
-            <>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {data?.length === 0? (
         <div>No books available.</div>
         ) : data?.map((book: IBookData) => (
           <BookCard key={book._id} book={book}/>
         ))
       }
-            </>
+            </div>
         ) : (
             <p>No Books Found</p>
         )

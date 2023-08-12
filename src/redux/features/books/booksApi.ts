@@ -69,9 +69,12 @@ const bookApi = api.injectEndpoints({
       invalidatesTags: ['post'],
     }),
     searchBooks: builder.query({
-      query: (query) => ({
-        url: `book?search=${query}`,
-      }),
+      query: (query) => {
+        return {
+          url: `book?search=${query}`,
+          method: 'GET',
+        };
+      },
     }),
     getFilter: builder.query<IFilter[], void>({
       query: () => '/books/categories',
@@ -86,7 +89,7 @@ const bookApi = api.injectEndpoints({
     }),
   }),
 });
-// <IGetBooksResponse, { query: string }>
+
 export const {
   usePostBooksMutation,
   useRecentGetBooksQuery,
@@ -94,6 +97,7 @@ export const {
   useSingleBookQuery,
   usePatchBookMutation,
   useDeleteBookMutation,
+  useSearchBooksQuery,
   useLazySearchBooksQuery,
   useGetFilterQuery,
   useGetFilterBooksQuery,
