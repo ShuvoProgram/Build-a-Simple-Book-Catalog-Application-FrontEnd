@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -18,12 +19,12 @@ import { setUser } from '@/redux/features/user/userSlice';
 // import { FormEvent } from 'react';
 
 export default function Navbar() {
- const { user } = useAppSelector((state) => state.auth);
+ const { user } = useAppSelector((state: { auth: any; }) => state.auth);
 
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    console.log('Logout');
+    // console.log('Logout');
     signOut(auth).then(() => {
       // Sign-out successful.
       dispatch(setUser(null));
@@ -33,9 +34,9 @@ export default function Navbar() {
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
-          <div>
+          <Link to={`/`}>
             <img className="h-8" src={logo} alt="log" />
-          </div>
+          </Link>
           <div>
             <ul className="flex items-center">
               <li>
@@ -45,13 +46,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Button variant="link" asChild>
-                  <Link to="/signup">SignUp</Link>
-                </Button>
-              </li>
-
-              <li>
-                <Button variant="link" asChild>
-                  <Link to="/checkout">Checkout</Link>
+                  <Link to={`/books`}>Books</Link>
                 </Button>
               </li>
               <li>
@@ -105,6 +100,11 @@ export default function Navbar() {
                         <Link to="/dashboard/wishlist">
                           <DropdownMenuItem className="cursor-pointer">
                             Wishlist
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/dashboard/reading-list">
+                          <DropdownMenuItem className="cursor-pointer">
+                            Reading List
                           </DropdownMenuItem>
                         </Link>
 

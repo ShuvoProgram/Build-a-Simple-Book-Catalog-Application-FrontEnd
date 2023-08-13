@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useWishlistBookMutation } from '@/redux/features/books/booksApi';
+import { useAddToReadingListMutation, useWishlistBookMutation } from '@/redux/features/books/booksApi';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from './ui/button';
+import { AiOutlineHeart } from "react-icons/ai";
+import { BiBookReader } from "react-icons/bi";
 import { toast } from './ui/use-toast';
 import { useAppSelector } from '@/redux/hook';
 
 interface Book {
-  //   image: string;
+    image: string;
   _id: string;
   title: string;
   author: string;
@@ -22,12 +24,14 @@ interface BookCardProps {
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const { user } = useAppSelector((state) => state.auth);
   const [wishlistBook] = useWishlistBookMutation();
+  const [addToReadingList] = useAddToReadingListMutation();
 
   const handleWishlist = async () => {
     const wishlistBookObject = {
       postId: book._id,
       user: user?.email,
       title: book.title,
+      image: book?.image,
       author: book.author,
       genre: book.genre,
       publicationDate: book.publicationDate,
@@ -35,7 +39,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     if(user?.email){
       try {
       const result = await wishlistBook(wishlistBookObject)
-      if(result.data.acknowledged) {
+      if(result?.data?.acknowledged) {
           toast({
             description: `Added Wishlist`
           })
@@ -57,9 +61,47 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     
   };
 
+  const handleAddToReadingList = async () => {
+
+    const readingBookObject = {
+      postId: book._id,
+      user: user?.email,
+      title: book.title,
+      image: book?.image,
+      author: book.author,
+      genre: book.genre,
+      publicationDate: book.publicationDate,
+    };
+
+    if(user?.email){
+      try {
+      const result = await addToReadingList(readingBookObject)
+      if(result?.data?.acknowledged) {
+          toast({
+            description: `Added Reading List`
+          })
+
+        } else {
+          toast({
+            description: `You have already Read`
+          })
+        }
+      return result;
+    } catch (error) {
+      console.error('Error occurred:', error);
+    }
+    } else {
+      toast({
+        description: "Please login to first"
+      })
+    }
+  }
+
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      {/* <img src={book.image} alt={book.title} className="w-full h-40 object-cover" /> */}
+    <div className="p-4 sm:mb-0 mb-6 max-w-sm relative rounded overflow-hidden border border-gray-200 shadow-lg">
+      <div className='h-64 overflow-hidden'>
+        <img src={book.image} alt={book.title} className="object-cover object-center h-full w-full" />
+      </div>
       <Link to={`/books-details/${book._id}`} className="px-6 py-4">
         <h2 className="text-xl font-bold mb-2">{book.title}</h2>
         <p className="text-gray-700 font-semibold mb-2">
@@ -70,20 +112,14 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
           Publication Date: {book.publicationDate}
         </p>
       </Link>
-      <div className="px-6 py-4 flex justify-between">
-        <Button variant={'outline'}
-          className="text-blue-500 font-semibold hover:text-blue-600"
-          onClick={handleWishlist}
-        >
-          Wishlist
-        </Button>
-        <a
-          href="#"
-          className="text-green-500 font-semibold hover:text-green-600"
-        >
-          Read
-        </a>
-      </div>
+      <div className="absolute top-5 right-5">
+                <AiOutlineHeart
+                    onClick={handleWishlist}
+                    className="text-blue-500 text-3xl bg-white border border-gray-200 shadow-sm mb-2 p-1 rounded font-semibold hover:text-blue-600 cursor-pointer" />
+                <BiBookReader
+                    onClick={handleAddToReadingList}
+                    className='text-[#37be4e] text-3xl bg-white border border-gray-200 shadow-sm mb-2 p-1 rounded cursor-pointer' />
+            </div>
     </div>
   );
 };

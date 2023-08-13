@@ -37,7 +37,6 @@ const [title, setTitle] = useState<string>('');
       author: author,
       genre: genre,
     }
-    console.log(EditBook);
     try {
         const result = await patchBook(EditBook);
         return result;

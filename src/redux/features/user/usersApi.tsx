@@ -15,7 +15,7 @@ const usersApi = api.injectEndpoints({
         url: `/user/${email}`,
         method: 'GET',
     })
-  }),
+  })
 })
 });
 

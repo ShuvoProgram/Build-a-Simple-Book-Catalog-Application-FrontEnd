@@ -34,7 +34,7 @@ const navigate = useNavigate();
 
   const onSubmit = async (data: SignUpFormInputs) => {
     dispatch(createUser({ email: data.email, password: data.password })).then((data) => {
-      console.log(data.meta.arg)
+      // console.log(data.meta.arg)
       const option = {
         email: data.meta.arg.email,
         password: data.meta.arg.password

@@ -41,6 +41,45 @@ const bookApi = api.injectEndpoints({
       },
       invalidatesTags: ['post'],
     }),
+    addToReadingList: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/reading-list`,
+          method: 'POST',
+          body: data,
+        };
+      },
+      invalidatesTags: ['post'],
+    }),
+    getReadingBook: builder.query({
+      query: (query) => {
+        console.log(query);
+        return {
+          url: `/reading-list?user=${query}`,
+          method: 'GET',
+        };
+      },
+    }),
+    deleteReading: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/reading-list/${data.id}`,
+          method: 'DELETE',
+          body: data,
+        };
+      },
+      invalidatesTags: ['post'],
+    }),
+    addToReadingFinished: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/reading-finished/${data.id}`,
+          method: 'POST',
+          body: data,
+        };
+      },
+      invalidatesTags: ['post'],
+    }),
     wishlistBook: builder.mutation({
       query: (data) => ({
         url: `/wishlist`,
@@ -101,6 +140,10 @@ export const {
   useLazySearchBooksQuery,
   useGetFilterQuery,
   useGetFilterBooksQuery,
+  useAddToReadingListMutation,
+  useAddToReadingFinishedMutation,
+  useGetReadingBookQuery,
+  useDeleteReadingMutation,
   useWishlistBookMutation,
   useGetWishlistBookQuery,
   useDeleteWishlistMutation,

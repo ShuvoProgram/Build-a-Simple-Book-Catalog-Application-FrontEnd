@@ -5,12 +5,13 @@ import AddedBooks from "@/pages/AddedBooks";
 import Signup from "@/pages/signup";
 import Login from "@/pages/Login";
 import Books from "@/pages/Books";
-import BooksDetails from "@/pages/BooksDetails";
 import Search from "@/pages/Search";
 import EditBook from "@/pages/EditBook";
 import BookCrud from "@/pages/BookCrud";
 import WishList from "@/pages/WishList";
 import PrivateRoute from "./PrivateRoute";
+import ReadingList from "@/pages/ReadingList";
+import BooksDetails from "@/pages/BooksDetails";
 
 const routes = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const routes = createBrowserRouter([
             {
                 path: '/dashboard/wishlist',
                 element: <PrivateRoute><WishList/></PrivateRoute>
+            },
+            {
+                path: '/dashboard/reading-list',
+                element: <PrivateRoute><ReadingList/></PrivateRoute>
             },
             {
                 path: '/signup',
