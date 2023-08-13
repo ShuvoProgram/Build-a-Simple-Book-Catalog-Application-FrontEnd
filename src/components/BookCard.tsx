@@ -39,7 +39,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     if(user?.email){
       try {
       const result = await wishlistBook(wishlistBookObject)
-      if(result?.data?.acknowledged) {
+      if(result) {
           toast({
             description: `Added Wishlist`
           })
@@ -76,7 +76,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     if(user?.email){
       try {
       const result = await addToReadingList(readingBookObject)
-      if(result?.data?.acknowledged) {
+      if(!result) {
           toast({
             description: `Added Reading List`
           })

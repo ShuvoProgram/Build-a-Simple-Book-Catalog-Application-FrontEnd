@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import banner from '@/assets/a_boy_reading_the_bo-removebg-preview.png';
-import hero from '@/assets/images/hero.png';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import Footer from '@/layouts/Footer';
 import { useRecentGetBooksQuery } from '@/redux/features/books/booksApi';
 import { SkeletonData } from '@/components/ui/skeletonData';
 import { IBookData } from '@/types/globalTypes';
@@ -49,9 +47,6 @@ export default function Home() {
         </div>
       </div>
       <div className="my-4">
-        <div>
-          <img className="mx-auto" src={hero} alt="" />
-        </div>
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-3xl pb-8 font-black text-primary uppercase mt-10">
             RecentLy Book Published

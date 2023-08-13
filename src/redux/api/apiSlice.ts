@@ -8,8 +8,8 @@ export const api = createApi({
 
     prepareHeaders: (headers, api) => {
       const { auth } = api.getState() as RootState;
-      if (auth.token) {
-        headers.set('Authorization', `Bearer ${auth.token}`);
+      if (auth.user) {
+        headers.set('Authorization', `Bearer ${auth.user}`);
       }
       return headers;
     },

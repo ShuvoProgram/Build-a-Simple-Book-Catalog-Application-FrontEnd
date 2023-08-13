@@ -13,6 +13,8 @@ import PrivateRoute from "./PrivateRoute";
 import ReadingList from "@/pages/ReadingList";
 import BooksDetails from "@/pages/BooksDetails";
 
+
+
 const routes = createBrowserRouter([
     {
         path: '/',
@@ -27,12 +29,12 @@ const routes = createBrowserRouter([
                 element: <Books />
             },
             {
-                path: '/books-details/:id',
-                element: <BooksDetails/>
-            },
-            {
                 path: '/edit-books/:id',
                 element: <PrivateRoute><EditBook/></PrivateRoute>
+            },
+            {
+                path: '/books-details/:id',
+                element: <BooksDetails/>
             },
             {
                 path: '/search',

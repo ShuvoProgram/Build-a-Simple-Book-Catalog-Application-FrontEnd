@@ -27,7 +27,6 @@ export default function Search() {
  
      const [searchTerm, setSearchTerm] = useState('');
 
-     const genres: string[] = data?.data?.map((book: IBookData) => book.genre) || [];
 
      const extractYearFromDate = (date: string) => {
     return new Date(date).getFullYear().toString();
@@ -73,6 +72,10 @@ export default function Search() {
   const handlePublicationDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPublicationDate(event.target.value);
   };
+
+    const genres = [
+        ...(new Set(data?.data?.map((book: IBookData) => book.genre)) as Set<string>),
+    ];
 
   const filteredBooks =
     selectedFilterType === 'manual'

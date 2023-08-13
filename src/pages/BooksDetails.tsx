@@ -1,6 +1,6 @@
 import AlertDialogBox from '@/components/AlertDialogBox';
 import BookReview from '@/components/BookReview';
-// import { Button } from '@/components/ui/button';
+import { SkeletonData } from '@/components/ui/skeletonData';
 import { useDeleteBookMutation, useSingleBookQuery } from '@/redux/features/books/booksApi';
 import { useAppSelector } from '@/redux/hook';
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -13,24 +13,36 @@ export default function BooksDetails() {
     const [deleteBook, { isError, isSuccess}] = useDeleteBookMutation();
 
     const {data: book, isLoading, refetch} = useSingleBookQuery(id);
-    console.log(isLoading)
-    console.log(book)
 
      if (isSuccess) {
-      return navigate('/')
+       navigate('/')
     }
 
-    const renderMessage = () => {
-    if (isError) {
-      return <div className="text-2xl text-red-600">Failed To Delete</div>;
-    }
+    if (isLoading) {
+    return (
+      <div className="flex items-center space-x-4">
+      <SkeletonData className="h-12 w-12 rounded-full" />
+      <div className="space-y-2">
+        <SkeletonData className="h-4 w-[250px]" />
+        <SkeletonData className="h-4 w-[200px]" />
+      </div>
+    </div>
+    )
+  }
 
-    return null;
-  };
+  //   const renderMessage = () => {
+  //   if (isError) {
+  //     return <div className="text-2xl text-red-600">Failed To Delete</div>;
+  //   }
+
+  //   return null;
+  // };
 
   return (
-    <>
-    {renderMessage}
+    <div>
+    {
+      isError ? (<div className="text-2xl text-red-600">Failed To Delete</div>) : <></>
+    }
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="bg-white rounded-lg p-6 shadow-md w-full max-w-md">
         <div className='h-64 overflow-hidden'>
@@ -61,6 +73,6 @@ export default function BooksDetails() {
           <BookReview id={id!}/>
           )
         }
-    </>
+    </div>
   )
 }
