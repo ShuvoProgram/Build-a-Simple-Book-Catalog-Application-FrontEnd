@@ -4,7 +4,7 @@ import { RootState } from '../store';
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000',
+    baseUrl: 'https://backend-jet-five.vercel.app',
 
     prepareHeaders: (headers, api) => {
       const { auth } = api.getState() as RootState;

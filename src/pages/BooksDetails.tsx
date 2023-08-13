@@ -33,6 +33,9 @@ export default function BooksDetails() {
     {renderMessage}
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="bg-white rounded-lg p-6 shadow-md w-full max-w-md">
+        <div className='h-64 overflow-hidden'>
+        <img src={book?.data?.image} alt={book?.data?.title} className="object-cover object-center h-full w-full" />
+      </div>
         <h1 className="text-2xl font-semibold mb-4">{book?.data?.title}</h1>
         <div className="mb-4">
           <span className="font-semibold">Genre:</span> {book?.data?.genre}

@@ -39,17 +39,7 @@ export default function Search() {
         if(debouncedQuery?.length){
             searchBooks(debouncedQuery)
         }
-      }, [debouncedQuery, searchBooks])
-
-      if(isLoading){
-        return <SkeletonData/>
-      }
-      if(error) {
-        return <ErrorMessage error={error}/>
-      }
-
-  useEffect(() => {
-    const filteredBooks = selectedGenre
+        const filteredBooks = selectedGenre
       ? data?.data?.filter((book: IBookData) => book.genre === selectedGenre) || []
       : data?.data || [];
 
@@ -60,7 +50,14 @@ export default function Search() {
     );
 
     setFilteredPublicationDates(publicationYears);
-  }, [selectedGenre, data]);
+      }, [debouncedQuery, searchBooks, selectedGenre, data])
+
+      if(isLoading){
+        return <SkeletonData/>
+      }
+      if(error) {
+        return <ErrorMessage error={error}/>
+      }
 
   const handleFilterTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFilterType(event.target.value);
