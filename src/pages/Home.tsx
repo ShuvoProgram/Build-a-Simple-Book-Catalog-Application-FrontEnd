@@ -3,7 +3,7 @@ import banner from '@/assets/a_boy_reading_the_bo-removebg-preview.png';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { useRecentGetBooksQuery } from '@/redux/features/books/booksApi';
-import { SkeletonData } from '@/components/ui/skeletonData';
+import {Triangle} from 'react-loader-spinner';
 import { IBookData } from '@/types/globalTypes';
 import BookCard from '@/components/BookCard';
 
@@ -15,13 +15,19 @@ export default function Home() {
 
     if (isLoading) {
     return (
-      <div className="flex items-center space-x-4">
-      <SkeletonData className="h-12 w-12 rounded-full" />
-      <div className="space-y-2">
-        <SkeletonData className="h-4 w-[250px]" />
-        <SkeletonData className="h-4 w-[200px]" />
-      </div>
-    </div>
+      <Triangle
+  height="120"
+  width="120"
+  color="#4fa94d"
+  ariaLabel="triangle-loading"
+  wrapperStyle={{
+    displays: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+  visible={true}
+  wrapperClass='triangle-loading'
+/>
     )
   }
   return (
