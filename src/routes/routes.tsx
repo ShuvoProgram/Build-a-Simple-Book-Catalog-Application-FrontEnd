@@ -14,7 +14,6 @@ import ReadingList from "@/pages/ReadingList";
 import BooksDetails from "@/pages/BooksDetails";
 
 
-
 const routes = createBrowserRouter([
     {
         path: '/',

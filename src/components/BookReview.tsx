@@ -2,7 +2,6 @@ import { useGetReviewQuery, usePostReviewMutation } from "@/redux/features/revie
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { FiSend } from "react-icons/fi";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import ReactStars from "react-rating-stars-component";
 
 interface IProps {
   id: string;
@@ -17,15 +16,11 @@ export default function BookReview({id}: IProps){
     pollingInterval: 30000,
     })
 
-    const [postReview, {isLoading, isError, isSuccess}] = usePostReviewMutation();
+    const [postReview] = usePostReviewMutation();
 
-    console.log(isLoading);
-  console.log(isError);
-  console.log(isSuccess);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputValue)
     const options = {
       id: id,
       data: { comment: inputValue },
