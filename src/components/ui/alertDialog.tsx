@@ -11,11 +11,20 @@ const AlertDialog = AlertDialogPrimitive.Root
 
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 
+// Create a new type by excluding className from AlertDialogPortalProps
+type AlertDialogPortalPropsWithoutClassName = Omit<
+  AlertDialogPrimitive.AlertDialogPortalProps,
+  "className"
+> & {
+  className?: string;
+};
+
+
 const AlertDialogPortal = ({
   className,
   ...props
-}: AlertDialogPrimitive.AlertDialogPortalProps) => (
-  <AlertDialogPrimitive.Portal className={cn(className)} {...props} />
+}: AlertDialogPortalPropsWithoutClassName) => (
+  <AlertDialogPrimitive.Portal children={cn(className)} {...props} />
 )
 AlertDialogPortal.displayName = AlertDialogPrimitive.Portal.displayName
 
